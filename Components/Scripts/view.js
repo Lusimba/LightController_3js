@@ -9,8 +9,8 @@ init=()=>{
     const sphere = getSphere(0.05);
 
     //Geometry Positioning
-    box.position.y = box.geometry.parameters.height/2;
-    plane.rotation.x = Math.PI/2; 
+    box.position.z = box.geometry.parameters.height/2;
+    plane.rotation.x = -Math.PI/2; 
     pointLight.position.y =1.5;
     pointLight.intensity = 1.8;
 
@@ -42,7 +42,8 @@ init=()=>{
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor('rgb(120, 120, 120)')
     document.getElementById('webgl').appendChild(renderer.domElement);
-    update(renderer, scene, camera);
+    const controls =  new THREE.OrbitControls(camera, renderer.domElement);
+    update(renderer, scene, camera, controls);
     return scene;
 }
 //Geometry
@@ -77,14 +78,14 @@ getPointLight = (intensity) =>{
     return light;
 }
 //Scene Update Function
-update =  (renderer, scene, camera, pointLight) =>{
+update =  (renderer, scene, camera, controls) =>{
     renderer.render(
         scene,
-        camera,
-        pointLight
+        camera
     ); 
+    controls.update();
     requestAnimationFrame(()=>{
-        update(renderer, scene, camera);
+        update(renderer, scene, camera, controls);
     });
 }
 getSphere=(size)=>{
